@@ -1,0 +1,652 @@
+<!DOCTYPE html><html>
+<head>
+    <title>IoT平台</title>
+    <meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="stylesheet" href="/webjars/font-awesome/5.0.13/web-fonts-with-css/css/fontawesome.min.css"/><link type="text/css" rel="stylesheet" href="/webjars/lato/0.3.0/css/lato.min.css"/><link rel="stylesheet" href="/css/cas.css"/><link rel="icon" id="templateFavicon" href="/iobps/portal/forward/logoFavicon" type="image/x-icon"/><script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/></head>
+
+<body class="login" style="background-image: url('/iobps/portal/forward/backgroundPictureCurrent'),url('/images/login_bg.jpg');">
+<header role="banner">
+        <nav class="navbar navbar-expand-md fixed-top">
+            <img id="customLogo" style="max-width:25rem;max-height:4rem;margin-left:0.5rem;margin-top:0.5rem;" src="" alt="" class="login-img"><input type="hidden" name="curLocale" id="curLocale" value="zh_CN"/><input type="hidden" name="curLocaleChangeEnabled" id="curLocaleChangeEnabled" value="false"/></nav>
+    </header>
+
+<main role="main" class="container mt-3 mb-3">
+    <div id="content" class="row">
+        <div class="col-md" style="max-height:80%">
+            <div class="card">
+                <div class="card-header">
+                    <h2>账号登录</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="fm1" action="login">
+
+                        <!--<h3 th:utext="#{screen.welcome.instructions}">Enter your Username and Password</h3>--><section class="form-group">
+                            <label for="username">用户名</label>
+
+                            <div>
+                                <input class="form-control required"
+                                       id="username"
+                                       size="25"
+                                       tabindex="1"
+                                       type="text"
+                                       accesskey="n"
+                                       autocomplete="new-password" name="username" value=""/></div>
+                        </section>
+
+                        <section class="form-group">
+                            <label for="password">密　码</label>
+
+                            <div>
+                                <input class="form-control required"
+                                       type="password"
+                                       id="password"
+                                       size="25"
+                                       tabindex="2"
+                                       accesskey="p"
+                                       autocomplete="new-password" name="password" value=""/><span id="capslock-on" style="display:none;">
+                                <p>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <span>screen.capslock.on</span>
+                                </p>
+                            </span>
+                            </div>
+                        </section>
+                        <!--@{/captcha} --><section>
+                            </section>
+
+                        <!--show login error--><input type="hidden" name="execution" value="e1s1"/><input type="hidden" name="_eventId" value="submit"/><input type="hidden" name="geolocation"/><input type="hidden" name="sid"/><input type="hidden" name="authServerName" id="authServerName"/><input id="platformLoginBtn" class="btn btn-block btn-submit"
+                               name="mySubmit"
+                               accesskey="l"
+                               tabindex="6"
+                               type="submit"
+                               value="登录"
+                               onclick="encryptPassWd('login')"
+                        /></form>
+                    <p style="font-size: 0.875rem; margin: 0; overflow: auto;">
+                        <span style="float: right; cursor: pointer;" onclick="openForgotPasswordModal()">忘记密码？</span>
+                    </p>
+
+                    <div class="bg_line" style="display:none;" id="3rdAccount"><span>使用第三方帐号登录 </span></div>
+                    <div class="hwaccount" style="display:none;" id="HWAccount">
+                        <img src="images/huawei_logo.png"><span onclick="loginBySSO('hwcloud')">华为云帐号</span>
+                    </div>
+
+                    <div class="ssoacount" style="display:none;" id="SSOAccount">
+                        <img src="images/ctwing.png"  onclick="loginBySSO('sso')"><span style="margin:0;padding:0;"  id="sso_account_span" onclick="loginBySSO('sso')"></span>
+                        <span onclick="loginBySSO('sso')">帐号</span>
+                    </div>
+
+                    <!--<form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">--><!--<input type="hidden" name="execution" th:value="${flowExecutionKey}"/>--><!--<input type="hidden" name="_eventId" value="resetPassword"/>--><!--<span class="fa fa-unlock"></span>--><!--<a th:utext="#{screen.pm.button.resetPassword}" href="javascript:void(0)" onclick="$('#passwordManagementForm').submit();"/>--><!--<p/>--><!--</form>--><!--<div th:unless="${passwordManagementEnabled}">--><!--<span class="fa fa-question-circle"></span>--><!--<span th:utext="#{screen.pm.button.forgotpwd}">Forgot your password?</span>--><!--<p/>--><!--</div>--><script type="text/javascript">
+                        var i = "......"
+                        $( document ).ready(function() {
+                            $("#fm1").submit(function () {
+                                $(":submit").attr("disabled", true);
+                                $(":submit").attr("value", i);
+                                console.log(i);
+                                return true;
+                            });
+                        });
+                    </script>
+
+                    <div id="sidebar">
+        <div class="sidebar-content">
+            <!--<p th:utext="#{screen.welcome.security}">For security reasons, please <a href="logout">log out</a> and exit
+                your web browser when you are done accessing \
+                services that require authentication!</p>--></div>
+    </div>
+                </div>
+                <div class="modal" id="forgotPasswordModal" tabindex="-1" role="dialog" style="display: none;">
+                    <div style="display: flex; align-items: center; position: relative; width: 45rem; margin: 0 auto; height: 100%;">
+                        <div class="modal-content" style="display: block; flex: 1; width: 100%; border: 0; background-color: #fff; max-width: 100%; max-height: 100%; color: #333;">
+                            <div class="modal-header">
+                                <h4 class="modal-title" style="font-size: 1.125rem">忘记密码？</h4>
+                                <span class="close" onclick="closeForgotPasswordModal()">&times;</span>
+                            </div>
+                            <div class="modal-body" style="padding: 1.5rem 2rem 0; font-size: 0.875rem;">
+                                <form id="forgotPasswordForm" method="post">
+                                    <div class="row" style="margin-bottom: 1.5rem;">
+                                        <div style="text-align: right; width: 25%;">
+                                            <label style="margin: 0; color: #999; line-height: 2.25em; display: inline-block; vertical-align: middle; white-space: normal!important; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; padding-right: .75rem; font-weight: 400;">用户名</label>
+                                        </div>
+                                        <div style="width: 65%; line-height: 2.25rem; min-height: 2.25rem;">
+                                            <input style="width: 100%; border: 1px solid #ccc; padding: 0 .625rem; box-sizing: border-box; background-color: #fff; text-overflow: ellipsis; font-size: 0.875rem; color: #333; height: 2.25rem;"
+                                                    type="text" name="userName"></div>
+                                    </div>
+                                    <div id="safeAuthDesc" class="row" style="margin-bottom: 1.5rem;">
+                                        <div style="text-align: right; width: 25%;">
+                                            <label style="margin: 0; color: #999; line-height: 2.25em; display: inline-block; vertical-align: middle; white-space: normal!important; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; padding-right: .75rem; font-weight: 400;">验证方式</label>
+                                        </div>
+                                        <div style="width: 65%; line-height: 2.25rem; min-height: 2.25rem;">
+                                            <select style="width: 100%; padding: 0 .625rem; height: 2.25rem; line-height: 2.25rem; font-size: .875rem; color: #333; background-color: #fff; border: 1px solid #ccc;"
+                                                    id="forgotPwdVerifyType" name="verifyType" tabindex="1" required>
+                                                <option value ="sms" selected>短信</option>
+                                                <option value ="email">邮箱</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 1.5rem;">
+                                        <div style="text-align: right; width: 25%;">
+                                            <label style="margin: 0; color: #999; line-height: 2.25em; display: inline-block; vertical-align: middle; white-space: normal!important; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; padding-right: .75rem; font-weight: 400;">图片验证码</label>
+                                        </div>
+                                        <div style="width: 65%; line-height: 2.25rem; min-height: 2.25rem;">
+                                            <input style="width: calc(100% - 8rem); border: 1px solid #ccc; padding: 0 .625rem; box-sizing: border-box; background-color: #fff; text-overflow: ellipsis; font-size: 0.875rem; color: #333; height: 2.25rem;"
+                                                   type="text" name="verifyCode"><img id="forgotPwdVerifyCodeImage" onclick="refreshTattedCode('forgotPwdVerifyCodeImage')"
+                                                 style="height: 2.25rem; width: 6.75rem; margin-left: 0.75rem; vertical-align: top;"></div>
+                                    </div>
+                                    <div style="margin-bottom: 1.5rem; text-align: center; color: #ee534b;">
+                                        <p id="userNameNotNull" style="display: none">用户名不能为空</p>
+                                        <p id="verifyCodeNotNull" style="display: none">验证码不能为空</p>
+                                        <p id="verifyCodeInvalid" style="display: none">无效验证码</p>
+                                        <p id="sendVerifyCodeFailed" style="display: none">发送验证码失败</p>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer" style="display: block; text-align: center; border: 0;">
+                                <button id="forgotPwdConfirm" type="button" class="btn btn-primary" style="min-width: 6rem;" onclick="submitForgotPasswordForm()">确定</button>
+                                <button type="button" class="btn btn-default" style="min-width: 6rem; background-color: #fff; border: 1px solid #ccc;" onclick="closeForgotPasswordModal()">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div id="notices" class="col-md mt-3 mt-md-0">--><!--<div th:replace="fragments/insecure :: insecure"><a href="fragments/insecure.html">insecure alert goes--><!--here</a></div>--><!--<div th:replace="fragments/defaultauthn :: staticAuthentication">--><!--<a href="fragments/defaultauthn.html">defaultAuthn</a>--><!--fragment--><!--</div>--><!--<div th:replace="fragments/cookies :: cookiesDisabled"><a href="fragments/cookies.html">cookies</a> fragment--><!--</div>--><!--<div th:replace="fragments/serviceui :: serviceUI"><a href="fragments/serviceui.html">service ui</a> fragment</div>--><!--<div th:replace="fragments/loginProviders :: loginProviders"><a href="fragments/loginProviders.html">loginProviders</a>--><!--fragment--><!--</div>--><!--</div>--><input type="hidden" name="serviceUrl" id="serviceUrl" value=""><div class="modal-backdrop fade" style="display:none" id="modalBD"></div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+            <div class="modal-dialog">
+                <div class="modal-content" style="margin-top:50%;width:600px;">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">选择帐号</h4>
+                        <button type="button" class="close" onclick="closeSelectUserModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" style="margin-top:2rem;margin-bottom:4rem;">
+                        <label class="control-label" style="margin-left:4rem;margin-right:2rem">您的华为云帐号创建了多个IoT平台帐号，请选择一个IoT平台帐号进行登录</label>
+                        <div>
+                            <div style="width:4rem;float:left;margin-top:2rem;height:3rem;">
+                                <label class="control-label" style="padding-top:0.5rem">帐号</label>
+                            </div>
+                            <div style="float:right;width:calc(100% - 6rem);margin-right:2rem;margin-top:2rem;">
+                            <select class="form-control" name="cid" id="userSelect" style="color:#000;border:1px solid #d9d9d9;font-size:14px;height:3rem;padding-top:0.5rem;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" style="margin-right:2rem;min-width:6rem;" onclick="loginBySSOForMultiUser()">登录</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="right-box" style="text-align: left; padding-left: 2.5rem; padding-right: 2.5rem; max-height: calc(100% - 8rem); overflow: auto; z-index: 99; word-break: break-all;">
+            <h1 style="font-size: 2rem;"><span id="loginViewTitle"></span></h1>
+            <p style="margin-top: 1.5rem; white-space: pre-wrap;" id="loginViewDescription"></p>
+        </div>
+    </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+        <div class="container"  style="margin: 0;">
+            <p style="line-height: 1.35rem; margin: 0; position: relative;">
+                <span id="personalDataCollection" style="color: #4a90e2;" tooltip="为防止欺诈行为，您在浏览器上登录账号时，我们会采集浏览器信息（浏览器类型、时区、插件、语言、字体、Canvas图片渲染哈希值、WebGL图片渲染哈希值），IP地址，您在页面上的鼠标和键盘操作信息，使用的Cookie、LocalStorage和Flash Cookie。" placement="top-left">个人数据收集声明</span>
+                <span style="margin-left: .5rem;"><a id="platformSoftwareNotice" target="_blank" href="/assets/html/NaePlatformSoftwareNotice.html" style="color: #4a90e2;">开源及第三方软件声明</a></span>
+            </p>
+            <p id="loginCopyRight" style="color: #999; line-height: 1.35rem; margin: 0;"></p>
+            <p style="color: #999; line-height: 1.35rem; margin: 0;">
+                <a target="_blank" style="color: #4a90e2;" id="loginIcp"></a>
+                <span style="margin-left: .5rem;" id="loginLicense"></span>
+            </p>
+        </div>
+    </footer>
+
+<script type="text/javascript" src="/webjars/zxcvbn/4.3.0/zxcvbn.js"></script>
+<script type="text/javascript" src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/webjars/jquery-cookie/1.4.1-1/jquery.cookie.js"></script>
+<script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="/webjars/headjs/1.0.3/head.min.js"></script>
+<script src="/webjars/store.js/1.3.17/store.min.js"></script>
+<script src="/js/browserfingerprint/acctguard.js"></script>
+<script src="/js/browserfingerprint/swfobject.js"></script>
+<script type="text/javascript" src="/js/cas.js?v=3"></script>
+<script type="text/javascript" src="/js/jsencrypt.min.js"></script>
+
+<script>
+head.ready(document, function () {
+    if (!window.jQuery) {
+    	var jqueryUrl = "\/webjars\/jquery\/3.3.1\/jquery.min.js"; 
+        head.load(jqueryUrl, loadjQueryUI);
+    } else {
+        notifyResourcesAreLoaded(resourceLoadedSuccessfully);
+    }
+});
+
+function loadjQueryUI() {
+	var jqueryUrl = "\/webjars\/jquery-ui\/1.12.1\/jquery-ui.min.js"; 
+	head.load(jqueryUrl, loadjQueryCookies);
+}
+
+function loadjQueryCookies() {
+	var jqueryUrl = "\/webjars\/jquery-cookie\/1.4.1-1\/jquery.cookie.js"; 
+	head.load(jqueryUrl, notifyResourcesAreLoaded(resourceLoadedSuccessfully));
+}
+
+function notifyResourcesAreLoaded(callback) {
+    if (typeof callback === "function") {
+        callback();
+    }
+}
+
+function refresh(){
+    var timestamp = (new Date()).getTime();
+    var url = "/ioias/portal/um/v19.2.0/user/tattedcode?date="+timestamp;
+    $("#verifyCodeImage").attr("src", url);
+}
+
+$(function(){
+        refresh();
+        $('#resetPasswordButton').attr("disabled", true);
+    });
+
+function clearResetForm(){
+    $('#userName').val("");
+    $('#type').val("");
+    $('#verifyCode').val("");
+}
+
+function checkForm(){
+    var username = $('#userName').val();
+    var type = $('#type').val();
+    var verifyCode = $('#verifyCode').val();
+    if(username != "" && type != "" && verifyCode != "" && verifyCode.length == 4){
+        $('#resetPasswordButton').attr("disabled", false)
+    }else(
+        $('#resetPasswordButton').attr("disabled", true)
+    )
+}
+
+function resetPassword() {
+    var userName = $('#userName').val();
+    var type = $('#type').val();
+    var verifyCode = $('#verifyCode').val();
+    var data = {userName: userName, type: type};
+    $.ajax({
+       type : "put",
+       url : "/ioias/portal/um/v1.1.0/user/password/reset?verifyCode="+verifyCode,
+       async : true,
+       contentType: "application/json;charset-UTF-8",
+       data : JSON.stringify(data),
+       success : function(data,textStatus,xhr){
+           if( xhr.status == 200 ){
+               clearResetForm();
+               $('#restPasswordMessage').css("color","white");
+               $('#restPasswordMessage').html(data.resp);
+               refresh();
+           }else{
+               clearResetForm();
+               $('#restPasswordMessage').css("color","red");
+               $('#restPasswordMessage').html(data.resp);
+               refresh();
+           }
+       },  error: function(XMLHttpRequest, textStatus, xhr){
+               var error = $.parseJSON(XMLHttpRequest.responseText);
+               clearResetForm();
+               $('#restPasswordMessage').css("color","red");
+               $('#restPasswordMessage').html(error.error_desc);
+               refresh();
+       },
+       dataType : "json"
+    });
+}
+
+</script>
+
+<script>
+    /*<![CDATA[*/
+
+    var trackGeoLocation = false;
+
+    var googleAnalyticsTrackingId = null;
+
+    if (googleAnalyticsTrackingId != null && googleAnalyticsTrackingId != '') {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', googleAnalyticsTrackingId, 'auto');
+        ga('send', 'pageview');
+    }
+
+    /*]]>*/
+
+</script>
+
+</body>
+</html>
+<!DOCTYPE html><html>
+<head>
+    <title>IoT平台</title>
+    <meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="stylesheet" href="/webjars/font-awesome/5.0.13/web-fonts-with-css/css/fontawesome.min.css"/><link type="text/css" rel="stylesheet" href="/webjars/lato/0.3.0/css/lato.min.css"/><link rel="stylesheet" href="/css/cas.css"/><link rel="icon" id="templateFavicon" href="/iobps/portal/forward/logoFavicon" type="image/x-icon"/><script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/></head>
+
+<body class="login" style="background-image: url('/iobps/portal/forward/backgroundPictureCurrent'),url('/images/login_bg.jpg');">
+<header role="banner">
+        <nav class="navbar navbar-expand-md fixed-top">
+            <img id="customLogo" style="max-width:25rem;max-height:4rem;margin-left:0.5rem;margin-top:0.5rem;" src="" alt="" class="login-img"><input type="hidden" name="curLocale" id="curLocale" value="zh_CN"/><input type="hidden" name="curLocaleChangeEnabled" id="curLocaleChangeEnabled" value="false"/></nav>
+    </header>
+
+<main role="main" class="container mt-3 mb-3">
+    <div id="content" class="row">
+        <div class="col-md" style="max-height:80%">
+            <div class="card">
+                <div class="card-header">
+                    <h2>账号登录</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="fm1" action="login">
+
+                        <!--<h3 th:utext="#{screen.welcome.instructions}">Enter your Username and Password</h3>--><section class="form-group">
+                            <label for="username">用户名</label>
+
+                            <div>
+                                <input class="form-control required"
+                                       id="username"
+                                       size="25"
+                                       tabindex="1"
+                                       type="text"
+                                       accesskey="n"
+                                       autocomplete="new-password" name="username" value=""/></div>
+                        </section>
+
+                        <section class="form-group">
+                            <label for="password">密　码</label>
+
+                            <div>
+                                <input class="form-control required"
+                                       type="password"
+                                       id="password"
+                                       size="25"
+                                       tabindex="2"
+                                       accesskey="p"
+                                       autocomplete="new-password" name="password" value=""/><span id="capslock-on" style="display:none;">
+                                <p>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <span>screen.capslock.on</span>
+                                </p>
+                            </span>
+                            </div>
+                        </section>
+                        <!--@{/captcha} --><section>
+                            </section>
+
+                        <!--show login error--><input type="hidden" name="execution" value="e1s1"/><input type="hidden" name="_eventId" value="submit"/><input type="hidden" name="geolocation"/><input type="hidden" name="sid"/><input type="hidden" name="authServerName" id="authServerName"/><input id="platformLoginBtn" class="btn btn-block btn-submit"
+                               name="mySubmit"
+                               accesskey="l"
+                               tabindex="6"
+                               type="submit"
+                               value="登录"
+                               onclick="encryptPassWd('login')"
+                        /></form>
+                    <p style="font-size: 0.875rem; margin: 0; overflow: auto;">
+                        <span style="float: right; cursor: pointer;" onclick="openForgotPasswordModal()">忘记密码？</span>
+                    </p>
+
+                    <div class="bg_line" style="display:none;" id="3rdAccount"><span>使用第三方帐号登录 </span></div>
+                    <div class="hwaccount" style="display:none;" id="HWAccount">
+                        <img src="images/huawei_logo.png"><span onclick="loginBySSO('hwcloud')">华为云帐号</span>
+                    </div>
+
+                    <div class="ssoacount" style="display:none;" id="SSOAccount">
+                        <img src="images/ctwing.png"  onclick="loginBySSO('sso')"><span style="margin:0;padding:0;"  id="sso_account_span" onclick="loginBySSO('sso')"></span>
+                        <span onclick="loginBySSO('sso')">帐号</span>
+                    </div>
+
+                    <!--<form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">--><!--<input type="hidden" name="execution" th:value="${flowExecutionKey}"/>--><!--<input type="hidden" name="_eventId" value="resetPassword"/>--><!--<span class="fa fa-unlock"></span>--><!--<a th:utext="#{screen.pm.button.resetPassword}" href="javascript:void(0)" onclick="$('#passwordManagementForm').submit();"/>--><!--<p/>--><!--</form>--><!--<div th:unless="${passwordManagementEnabled}">--><!--<span class="fa fa-question-circle"></span>--><!--<span th:utext="#{screen.pm.button.forgotpwd}">Forgot your password?</span>--><!--<p/>--><!--</div>--><script type="text/javascript">
+                        var i = "......"
+                        $( document ).ready(function() {
+                            $("#fm1").submit(function () {
+                                $(":submit").attr("disabled", true);
+                                $(":submit").attr("value", i);
+                                console.log(i);
+                                return true;
+                            });
+                        });
+                    </script>
+
+                    <div id="sidebar">
+        <div class="sidebar-content">
+            <!--<p th:utext="#{screen.welcome.security}">For security reasons, please <a href="logout">log out</a> and exit
+                your web browser when you are done accessing \
+                services that require authentication!</p>--></div>
+    </div>
+                </div>
+                <div class="modal" id="forgotPasswordModal" tabindex="-1" role="dialog" style="display: none;">
+                    <div style="display: flex; align-items: center; position: relative; width: 45rem; margin: 0 auto; height: 100%;">
+                        <div class="modal-content" style="display: block; flex: 1; width: 100%; border: 0; background-color: #fff; max-width: 100%; max-height: 100%; color: #333;">
+                            <div class="modal-header">
+                                <h4 class="modal-title" style="font-size: 1.125rem">忘记密码？</h4>
+                                <span class="close" onclick="closeForgotPasswordModal()">&times;</span>
+                            </div>
+                            <div class="modal-body" style="padding: 1.5rem 2rem 0; font-size: 0.875rem;">
+                                <form id="forgotPasswordForm" method="post">
+                                    <div class="row" style="margin-bottom: 1.5rem;">
+                                        <div style="text-align: right; width: 25%;">
+                                            <label style="margin: 0; color: #999; line-height: 2.25em; display: inline-block; vertical-align: middle; white-space: normal!important; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; padding-right: .75rem; font-weight: 400;">用户名</label>
+                                        </div>
+                                        <div style="width: 65%; line-height: 2.25rem; min-height: 2.25rem;">
+                                            <input style="width: 100%; border: 1px solid #ccc; padding: 0 .625rem; box-sizing: border-box; background-color: #fff; text-overflow: ellipsis; font-size: 0.875rem; color: #333; height: 2.25rem;"
+                                                    type="text" name="userName"></div>
+                                    </div>
+                                    <div id="safeAuthDesc" class="row" style="margin-bottom: 1.5rem;">
+                                        <div style="text-align: right; width: 25%;">
+                                            <label style="margin: 0; color: #999; line-height: 2.25em; display: inline-block; vertical-align: middle; white-space: normal!important; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; padding-right: .75rem; font-weight: 400;">验证方式</label>
+                                        </div>
+                                        <div style="width: 65%; line-height: 2.25rem; min-height: 2.25rem;">
+                                            <select style="width: 100%; padding: 0 .625rem; height: 2.25rem; line-height: 2.25rem; font-size: .875rem; color: #333; background-color: #fff; border: 1px solid #ccc;"
+                                                    id="forgotPwdVerifyType" name="verifyType" tabindex="1" required>
+                                                <option value ="sms" selected>短信</option>
+                                                <option value ="email">邮箱</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 1.5rem;">
+                                        <div style="text-align: right; width: 25%;">
+                                            <label style="margin: 0; color: #999; line-height: 2.25em; display: inline-block; vertical-align: middle; white-space: normal!important; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; padding-right: .75rem; font-weight: 400;">图片验证码</label>
+                                        </div>
+                                        <div style="width: 65%; line-height: 2.25rem; min-height: 2.25rem;">
+                                            <input style="width: calc(100% - 8rem); border: 1px solid #ccc; padding: 0 .625rem; box-sizing: border-box; background-color: #fff; text-overflow: ellipsis; font-size: 0.875rem; color: #333; height: 2.25rem;"
+                                                   type="text" name="verifyCode"><img id="forgotPwdVerifyCodeImage" onclick="refreshTattedCode('forgotPwdVerifyCodeImage')"
+                                                 style="height: 2.25rem; width: 6.75rem; margin-left: 0.75rem; vertical-align: top;"></div>
+                                    </div>
+                                    <div style="margin-bottom: 1.5rem; text-align: center; color: #ee534b;">
+                                        <p id="userNameNotNull" style="display: none">用户名不能为空</p>
+                                        <p id="verifyCodeNotNull" style="display: none">验证码不能为空</p>
+                                        <p id="verifyCodeInvalid" style="display: none">无效验证码</p>
+                                        <p id="sendVerifyCodeFailed" style="display: none">发送验证码失败</p>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer" style="display: block; text-align: center; border: 0;">
+                                <button id="forgotPwdConfirm" type="button" class="btn btn-primary" style="min-width: 6rem;" onclick="submitForgotPasswordForm()">确定</button>
+                                <button type="button" class="btn btn-default" style="min-width: 6rem; background-color: #fff; border: 1px solid #ccc;" onclick="closeForgotPasswordModal()">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div id="notices" class="col-md mt-3 mt-md-0">--><!--<div th:replace="fragments/insecure :: insecure"><a href="fragments/insecure.html">insecure alert goes--><!--here</a></div>--><!--<div th:replace="fragments/defaultauthn :: staticAuthentication">--><!--<a href="fragments/defaultauthn.html">defaultAuthn</a>--><!--fragment--><!--</div>--><!--<div th:replace="fragments/cookies :: cookiesDisabled"><a href="fragments/cookies.html">cookies</a> fragment--><!--</div>--><!--<div th:replace="fragments/serviceui :: serviceUI"><a href="fragments/serviceui.html">service ui</a> fragment</div>--><!--<div th:replace="fragments/loginProviders :: loginProviders"><a href="fragments/loginProviders.html">loginProviders</a>--><!--fragment--><!--</div>--><!--</div>--><input type="hidden" name="serviceUrl" id="serviceUrl" value=""><div class="modal-backdrop fade" style="display:none" id="modalBD"></div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+            <div class="modal-dialog">
+                <div class="modal-content" style="margin-top:50%;width:600px;">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">选择帐号</h4>
+                        <button type="button" class="close" onclick="closeSelectUserModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" style="margin-top:2rem;margin-bottom:4rem;">
+                        <label class="control-label" style="margin-left:4rem;margin-right:2rem">您的华为云帐号创建了多个IoT平台帐号，请选择一个IoT平台帐号进行登录</label>
+                        <div>
+                            <div style="width:4rem;float:left;margin-top:2rem;height:3rem;">
+                                <label class="control-label" style="padding-top:0.5rem">帐号</label>
+                            </div>
+                            <div style="float:right;width:calc(100% - 6rem);margin-right:2rem;margin-top:2rem;">
+                            <select class="form-control" name="cid" id="userSelect" style="color:#000;border:1px solid #d9d9d9;font-size:14px;height:3rem;padding-top:0.5rem;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" style="margin-right:2rem;min-width:6rem;" onclick="loginBySSOForMultiUser()">登录</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="right-box" style="text-align: left; padding-left: 2.5rem; padding-right: 2.5rem; max-height: calc(100% - 8rem); overflow: auto; z-index: 99; word-break: break-all;">
+            <h1 style="font-size: 2rem;"><span id="loginViewTitle"></span></h1>
+            <p style="margin-top: 1.5rem; white-space: pre-wrap;" id="loginViewDescription"></p>
+        </div>
+    </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+        <div class="container"  style="margin: 0;">
+            <p style="line-height: 1.35rem; margin: 0; position: relative;">
+                <span id="personalDataCollection" style="color: #4a90e2;" tooltip="为防止欺诈行为，您在浏览器上登录账号时，我们会采集浏览器信息（浏览器类型、时区、插件、语言、字体、Canvas图片渲染哈希值、WebGL图片渲染哈希值），IP地址，您在页面上的鼠标和键盘操作信息，使用的Cookie、LocalStorage和Flash Cookie。" placement="top-left">个人数据收集声明</span>
+                <span style="margin-left: .5rem;"><a id="platformSoftwareNotice" target="_blank" href="/assets/html/NaePlatformSoftwareNotice.html" style="color: #4a90e2;">开源及第三方软件声明</a></span>
+            </p>
+            <p id="loginCopyRight" style="color: #999; line-height: 1.35rem; margin: 0;"></p>
+            <p style="color: #999; line-height: 1.35rem; margin: 0;">
+                <a target="_blank" style="color: #4a90e2;" id="loginIcp"></a>
+                <span style="margin-left: .5rem;" id="loginLicense"></span>
+            </p>
+        </div>
+    </footer>
+
+<script type="text/javascript" src="/webjars/zxcvbn/4.3.0/zxcvbn.js"></script>
+<script type="text/javascript" src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/webjars/jquery-cookie/1.4.1-1/jquery.cookie.js"></script>
+<script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="/webjars/headjs/1.0.3/head.min.js"></script>
+<script src="/webjars/store.js/1.3.17/store.min.js"></script>
+<script src="/js/browserfingerprint/acctguard.js"></script>
+<script src="/js/browserfingerprint/swfobject.js"></script>
+<script type="text/javascript" src="/js/cas.js?v=3"></script>
+<script type="text/javascript" src="/js/jsencrypt.min.js"></script>
+
+<script>
+head.ready(document, function () {
+    if (!window.jQuery) {
+    	var jqueryUrl = "\/webjars\/jquery\/3.3.1\/jquery.min.js"; 
+        head.load(jqueryUrl, loadjQueryUI);
+    } else {
+        notifyResourcesAreLoaded(resourceLoadedSuccessfully);
+    }
+});
+
+function loadjQueryUI() {
+	var jqueryUrl = "\/webjars\/jquery-ui\/1.12.1\/jquery-ui.min.js"; 
+	head.load(jqueryUrl, loadjQueryCookies);
+}
+
+function loadjQueryCookies() {
+	var jqueryUrl = "\/webjars\/jquery-cookie\/1.4.1-1\/jquery.cookie.js"; 
+	head.load(jqueryUrl, notifyResourcesAreLoaded(resourceLoadedSuccessfully));
+}
+
+function notifyResourcesAreLoaded(callback) {
+    if (typeof callback === "function") {
+        callback();
+    }
+}
+
+function refresh(){
+    var timestamp = (new Date()).getTime();
+    var url = "/ioias/portal/um/v19.2.0/user/tattedcode?date="+timestamp;
+    $("#verifyCodeImage").attr("src", url);
+}
+
+$(function(){
+        refresh();
+        $('#resetPasswordButton').attr("disabled", true);
+    });
+
+function clearResetForm(){
+    $('#userName').val("");
+    $('#type').val("");
+    $('#verifyCode').val("");
+}
+
+function checkForm(){
+    var username = $('#userName').val();
+    var type = $('#type').val();
+    var verifyCode = $('#verifyCode').val();
+    if(username != "" && type != "" && verifyCode != "" && verifyCode.length == 4){
+        $('#resetPasswordButton').attr("disabled", false)
+    }else(
+        $('#resetPasswordButton').attr("disabled", true)
+    )
+}
+
+function resetPassword() {
+    var userName = $('#userName').val();
+    var type = $('#type').val();
+    var verifyCode = $('#verifyCode').val();
+    var data = {userName: userName, type: type};
+    $.ajax({
+       type : "put",
+       url : "/ioias/portal/um/v1.1.0/user/password/reset?verifyCode="+verifyCode,
+       async : true,
+       contentType: "application/json;charset-UTF-8",
+       data : JSON.stringify(data),
+       success : function(data,textStatus,xhr){
+           if( xhr.status == 200 ){
+               clearResetForm();
+               $('#restPasswordMessage').css("color","white");
+               $('#restPasswordMessage').html(data.resp);
+               refresh();
+           }else{
+               clearResetForm();
+               $('#restPasswordMessage').css("color","red");
+               $('#restPasswordMessage').html(data.resp);
+               refresh();
+           }
+       },  error: function(XMLHttpRequest, textStatus, xhr){
+               var error = $.parseJSON(XMLHttpRequest.responseText);
+               clearResetForm();
+               $('#restPasswordMessage').css("color","red");
+               $('#restPasswordMessage').html(error.error_desc);
+               refresh();
+       },
+       dataType : "json"
+    });
+}
+
+</script>
+
+<script>
+    /*<![CDATA[*/
+
+    var trackGeoLocation = false;
+
+    var googleAnalyticsTrackingId = null;
+
+    if (googleAnalyticsTrackingId != null && googleAnalyticsTrackingId != '') {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', googleAnalyticsTrackingId, 'auto');
+        ga('send', 'pageview');
+    }
+
+    /*]]>*/
+
+</script>
+
+</body>
+</html>
